@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-900 text-gray-200 font-sans antialiased selection:bg-blue-500 selection:text-white">
+
+    <div class="max-w-4xl mx-auto px-6 py-16">
+        <!-- Header Section -->
+        <header class="text-center mb-16">
+            <h1 id="dev-name" class="text-5xl font-bold text-white mb-4 tracking-tight">Your Name</h1>
+            <h2 id="dev-role" class="text-2xl text-blue-400 font-medium mb-6">Your Role / Profile</h2>
+            <div class="flex justify-center gap-4">
+                <a id="dev-github" href="#" target="_blank" class="text-gray-400 hover:text-white text-2xl transition"><i class="fab fa-github"></i></a>
+                <a id="dev-email" href="#" class="text-gray-400 hover:text-white text-2xl transition"><i class="fas fa-envelope"></i></a>
+            </div>
+        </header>
+
+        <!-- About Section -->
+        <section class="mb-12 bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">About Me</h3>
+            <p id="dev-bio" class="text-gray-400 leading-relaxed text-lg">
+                Your bio data will appear here. Go to /admin to update your profile.
+            </p>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="mb-12 bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Technical Skills</h3>
+            <p id="dev-skills" class="text-blue-300 font-mono text-lg">
+                Skill 1, Skill 2, Skill 3
+            </p>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="mb-12 bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-4 border-b border-gray-700 pb-2">Projects & Experience</h3>
+            <p id="dev-projects" class="text-gray-400 whitespace-pre-line text-lg">
+                Add your projects from the admin panel.
+            </p>
+        </section>
+        
+        <div class="text-center mt-12">
+            <a href="/admin" class="text-sm text-gray-600 hover:text-gray-400">Admin Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Data load karne ka function
+        function loadData() {
+            const savedData = localStorage.getItem('bioDataStore');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                document.getElementById('dev-name').innerText = data.name || 'Your Name';
+                document.getElementById('dev-role').innerText = data.role || 'Your Role';
+                document.getElementById('dev-bio').innerText = data.bio || 'Your bio goes here.';
+                document.getElementById('dev-skills').innerText = data.skills || 'Your Skills';
+                document.getElementById('dev-projects').innerText = data.projects || 'Your Projects';
+                document.getElementById('dev-github').href = data.github || '#';
+                document.getElementById('dev-email').href = data.email ? 'mailto:' + data.email : '#';
+            }
+        }
+        
+        // Page load hote hi data fetch karein
+        window.onload = loadData;
+    </script>
+</body>
+</html>
