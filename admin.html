@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center bg-gray-900">
+        <div class="bg-white p-10 rounded-xl shadow-2xl w-full max-w-md text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Admin Login</h2>
+            <p class="text-gray-500 mb-8">Apna bio-data edit karne ke liye login karein</p>
+            
+            <input type="text" id="username" placeholder="Username" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="password" id="password" placeholder="Password" class="w-full px-4 py-3 border border-gray-300 rounded-lg mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            
+            <button onclick="checkLogin()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition">Login</button>
+            <p id="error-msg" class="text-red-500 mt-4 hidden">Galat Username ya Password!</p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden by default) -->
+    <div id="dashboard-screen" class="hidden min-h-screen bg-gray-50 pb-10">
+        <nav class="bg-blue-600 p-4 text-white shadow-md flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+            <div>
+                <a href="../" class="bg-blue-800 px-4 py-2 rounded hover:bg-blue-900 mr-2">View Website</a>
+                <button onclick="logout()" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">Logout</button>
+            </div>
+        </nav>
+
+        <div class="max-w-3xl mx-auto mt-10 bg-white p-8 rounded-xl shadow">
+            <h2 class="text-xl font-bold mb-6 text-gray-700">Update Profile Details</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                <div>
+                    <label class="block text-gray-600 font-semibold mb-2">Full Name</label>
+                    <input type="text" id="edit-name" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold mb-2">Profile Role (e.g. Web Developer)</label>
+                    <input type="text" id="edit-role" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                <div>
+                    <label class="block text-gray-600 font-semibold mb-2">GitHub Profile Link</label>
+                    <input type="text" id="edit-github" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500">
+                </div>
+                <div>
+                    <label class="block text-gray-600 font-semibold mb-2">Email Address</label>
+                    <input type="text" id="edit-email" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-600 font-semibold mb-2">About Me (Bio)</label>
+                <textarea id="edit-bio" rows="3" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500"></textarea>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-600 font-semibold mb-2">Skills (Comma separated)</label>
+                <input type="text" id="edit-skills" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500">
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-600 font-semibold mb-2">Projects / Experience Details</label>
+                <textarea id="edit-projects" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500"></textarea>
+            </div>
+
+            <button onclick="saveData()" class="w-full bg-green-500 text-white font-bold py-3 rounded-lg hover:bg-green-600 text-lg transition">Save Changes</button>
+            <p id="success-msg" class="text-green-600 mt-4 text-center font-bold hidden">Changes Saved Successfully!</p>
+        </div>
+    </div>
+
+    <script>
+        // Login Check Function
+        function checkLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            // Username and Password check
+            if (user === 'A RAJA' && pass === 'A RAJA') {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+                loadDataIntoForm();
+            } else {
+                document.getElementById('error-msg').classList.remove('hidden');
+            }
+        }
+
+        // Logout Function
+        function logout() {
+            document.getElementById('dashboard-screen').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Form me data load karne ka function
+        function loadDataIntoForm() {
+            const savedData = localStorage.getItem('bioDataStore');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                document.getElementById('edit-name').value = data.name || '';
+                document.getElementById('edit-role').value = data.role || '';
+                document.getElementById('edit-github').value = data.github || '';
+                document.getElementById('edit-email').value = data.email || '';
+                document.getElementById('edit-bio').value = data.bio || '';
+                document.getElementById('edit-skills').value = data.skills || '';
+                document.getElementById('edit-projects').value = data.projects || '';
+            }
+        }
+
+        // Naya data save karne ka function
+        function saveData() {
+            const data = {
+                name: document.getElementById('edit-name').value,
+                role: document.getElementById('edit-role').value,
+                github: document.getElementById('edit-github').value,
+                email: document.getElementById('edit-email').value,
+                bio: document.getElementById('edit-bio').value,
+                skills: document.getElementById('edit-skills').value,
+                projects: document.getElementById('edit-projects').value
+            };
+
+            localStorage.setItem('bioDataStore', JSON.stringify(data));
+            
+            // Success message dikhana
+            const msg = document.getElementById('success-msg');
+            msg.classList.remove('hidden');
+            setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+        }
+    </script>
+</body>
+</html>
